@@ -6,13 +6,13 @@ import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.s
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { MinionArt } from "./MinionArt.sol";
-import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
+import { SignatureChecker } from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
 contract MinionPlaza is Ownable {
 	using ECDSA for bytes32;
 	using SafeERC20 for IERC20;
 
-	// Define the domain separator
+	// Define the domain & order typehash
 	bytes32 public constant DOMAIN_TYPEHASH =
 		keccak256(
 			"EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
@@ -22,21 +22,12 @@ contract MinionPlaza is Ownable {
 			"Order(address seller,address nftContract,uint256 tokenId,uint256 price,address paymentToken,uint256 expirationTime)"
 		);
 
+	// Define marketplace name & version
 	string public constant NAME = "MinionPlaza";
 	string public constant VERSION = "1.0";
 
 	// Domain separator
 	bytes32 public DOMAIN_SEPARATOR;
-
-	// Struct to represent the order
-	struct Order {
-		address seller;
-		address nftContract;
-		uint256 tokenId;
-		uint256 price;
-		address paymentToken;
-		uint256 expirationTime;
-	}
 
 	// Mapping to store executed orders (to prevent replay attacks)
 	mapping(bytes32 => bool) public executedOrders;
