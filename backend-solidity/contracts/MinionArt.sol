@@ -14,7 +14,7 @@ contract MinionArt is ERC721URIStorage, IMinionErrors {
 	uint256 public nextTokenId;
 
 	// Event to be emitted when a new token is minted
-	event MintMinted(uint256 indexed tokenId, address owner, string tokenURI);
+	event MNAMinted(uint256 indexed tokenId, address owner, string tokenURI);
 
 	/**
 	 * @dev Initializes the contract with the specified market address.
@@ -31,7 +31,7 @@ contract MinionArt is ERC721URIStorage, IMinionErrors {
 		_safeMint(_owner, nextTokenId);
 		_setTokenURI(nextTokenId, _tokenURI);
 
-		emit MintMinted(nextTokenId, _owner, _tokenURI);
+		emit MNAMinted(nextTokenId, _owner, _tokenURI);
 
 		++nextTokenId;
 	}
@@ -63,7 +63,7 @@ contract MinionArt is ERC721URIStorage, IMinionErrors {
 		address owner = ownerOf(_tokenId);
 
 		if (owner == address(0)) {
-			revert MNTNotexist(_tokenId);
+			revert MNANotExist(_tokenId);
 		}
 
 		return owner;
